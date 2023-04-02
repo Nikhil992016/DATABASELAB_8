@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Registration Form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2 style="font-weight: bold;">User Registration Form</h2>
+    <form method="post" action="Registration.php">
+        <div style="display: flex; justify-content: space-between;">
+            <div style="width: 48%;">
+                <label for="fname" style="font-weight: bold; display: inline-block; width: 30%;">First Name:</label>
+                <input type="text" id="fname" name="fname" required style="display: inline-block; width: 65%;"><br><br>
+            </div>
+            <div style="width: 48%;">
+                <label for="lname" style="font-weight: bold; display: inline-block; width: 30%;">Last Name:</label>
+                <input type="text" id="lname" name="lname" required style="display: inline-block; width: 65%;"><br><br>
+            </div>
+        </div>
+        <label for="email" style="font-weight: bold;">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+        <label for="password" style="font-weight: bold;">Password:</label>
+        <input type="password" id="password" name="password" minlength="8" required><br><br>
+        <label for="confirm_password" style="font-weight: bold;">Confirm Password:</label>
+        <input type="password" id="confirm_password" name="confirm_password" minlength="8" required><br>
+        <span id="password_error" style="color: red;"></span><br><br>
+        <label for="password_strength" style="font-weight: bold;">Password Strength: <span id="password_strength"></span></label><br>
+        <span style="font-weight: bold;">Already a member? <a href="login.html" style="color: blue;">Login here</a></span><br><br>
+        <input type="submit" value="Register">
+    </form>
+
+    <script>
+        // Check if password and confirm password fields match
+        var password = document.getElementById("password");
+        var confirm_password = document.getElementById("confirm_password");
+        var password_error = document.getElementById("password_error");
+
+        function validatePassword(){
+            if(password.value != confirm_password.value) {
+                confirm_password.setCustomValidity("Password and Confirm Password fields must match.");
+                password_error.textContent = "Password and Confirm Password fields must match.";
+            } else {
+                confirm_password.setCustomValidity('');
+                password_error.textContent = '';
+            }
+        }
+
+        password.onchange = validatePassword;
+        confirm_password.onkeyup = validatePassword;
+
+        // Check password strength
+        var password_strength = document.getElementById("password_strength");
+        var password = document.getElementById("password");
+
+        password.addEventListener('keyup', function(){
+            var password_value = password.value;
+            var password_strength_text = "";
+            var regex_strong = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            var regex_medium = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+            if (regex_strong.test(password_value)) {
+                password_strength_text = "Strong";
+                password_strength.style.color = "green";
+            } else if (regex_medium.test(password_value)) {
+                password_strength_text = "Medium";
+                password_strength.style.color = "orange";
+            } else {
+                password_strength_text = "Weak";
+                password_strength.style.color = "red";
+            }
+
+            password_strength.textContent = password_strength_text;
+        });
+    </script>
+</body>
